@@ -18,19 +18,39 @@
         "key": "Entity",
         "fields": ["Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)"]
       }
+    },
+    {
+      "calculate": "datum['Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)'] === null ? 'No Data' : datum['Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)']",
+      "as": "death_rate"
     }
   ],
-  "mark": {"type": "geoshape"},
-  "encoding": {
-    "color": {
-      "field": "Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)",
-      "type": "quantitative", "title": "Total Average Death Rate",
-      "scale": {"type": "log"}
+  "layer": [
+    {
+      "transform": [
+        {
+          "calculate": "'No data available in ' + datum.properties.NAME",
+          "as": "note"
+        }
+      ],
+      "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "black"},
+      "encoding": {"tooltip": {"field": "note"}}
     },
-    "tooltip": [
-      {"field": "properties.NAME", "type": "nominal", "title": "Country:"},
-      {"field": "Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)", "type": "quantitative", "title": "Total Average Death Rate:"}
-    ]
-  }
+    {
+      "mark": {"type": "geoshape", "filled": true, "stroke": "black", "strokeWidth": 1},
+      "encoding": {
+        "color": {
+          "field": "death_rate",
+          "type": "quantitative",
+          "title": "Total Average Death Rate",
+          "scale": {"type": "log"}
+        },
+        "tooltip": [
+          {"field": "properties.NAME", "type": "nominal", "title": "Country:"},
+          {"field": "death_rate", "type": "quantitative", "title": "Total Average Death Rate:"}
+        ]
+      }
+    }
+  ]
 }
+
 
